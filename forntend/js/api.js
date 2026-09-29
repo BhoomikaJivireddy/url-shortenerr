@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "https://url-shortenerr-q1cl.onrender.com";
 
 async function apiRequest(endpoint, options = {}) {
 
