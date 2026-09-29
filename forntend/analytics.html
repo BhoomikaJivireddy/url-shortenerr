@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics | URL Shortener</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <header class="dashboard-header">
+
+        <div>
+            <h1>URL Analytics</h1>
+            <p>View performance of your shortened URL</p>
+        </div>
+
+        <button id="backButton">Back to Dashboard</button>
+
+    </header>
+
+
+    <main>
+
+        <!-- URL Information -->
+
+        <section class="dashboard-card">
+
+            <h2>URL Details</h2>
+
+            <div id="urlDetails">
+                <p>Loading...</p>
+            </div>
+
+        </section>
+
+
+        <!-- Click Statistics -->
+
+        <section class="dashboard-card">
+
+            <h2>Click Statistics</h2>
+
+            <div id="clickStats">
+                <p>Loading...</p>
+            </div>
+
+        </section>
+
+
+        <!-- Browser Statistics -->
+
+        <section class="dashboard-card">
+
+            <h2>Browsers</h2>
+
+            <div id="browserStats">
+                <p>Loading...</p>
+            </div>
+
+        </section>
+
+
+        <!-- Operating System -->
+
+        <section class="dashboard-card">
+
+            <h2>Operating Systems</h2>
+
+            <div id="osStats">
+                <p>Loading...</p>
+            </div>
+
+        </section>
+
+
+        <!-- Device Statistics -->
+
+        <section class="dashboard-card">
+
+            <h2>Devices</h2>
+
+            <div id="deviceStats">
+                <p>Loading...</p>
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="js/api.js"></script>
+<script src="js/analytics.js"></script>
+
+</body>
+</html>

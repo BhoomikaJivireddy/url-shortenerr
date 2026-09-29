@@ -21,7 +21,6 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
             CustomUserDetailsService userDetailsService,
@@ -31,7 +30,6 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
-
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -48,7 +46,6 @@ public class SecurityConfig {
         return provider;
     }
 
-
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration
@@ -57,13 +54,14 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http
     ) throws Exception {
 
         http
+                .cors(cors -> {})
+
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .sessionManagement(session ->
@@ -75,6 +73,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/**",
+                                "/api/qr/**",
                                 "/hello",
                                 "/{shortCode}"
                         ).permitAll()

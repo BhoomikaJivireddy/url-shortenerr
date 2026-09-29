@@ -44,6 +44,10 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION}
       JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION}
+
+      TZ: Asia/Kolkata
+      JAVA_TOOL_OPTIONS: -Duser.timezone=Asia/Kolkata
+
     depends_on:
       mysql:
         condition: service_healthy

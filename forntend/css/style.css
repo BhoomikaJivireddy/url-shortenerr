@@ -1,0 +1,633 @@
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --background: #f5f7fb;
+    --card: #ffffff;
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --success: #16a34a;
+    --danger: #dc2626;
+    --warning: #d97706;
+    --shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   AUTH PAGES
+   ========================================================= */
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background:
+            radial-gradient(
+                    circle at top left,
+                    rgba(37, 99, 235, 0.12),
+                    transparent 35%
+            ),
+            var(--background);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 410px;
+    padding: 38px;
+    background: var(--card);
+    border: 1px solid rgba(229, 231, 235, 0.8);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+}
+
+.auth-card h1 {
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: 30px;
+    letter-spacing: -0.5px;
+}
+
+.auth-card h2 {
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+.auth-card > p {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 25px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+input {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+    background: #fff;
+    color: var(--text);
+    font-size: 15px;
+    outline: none;
+    transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+}
+
+input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+input::placeholder {
+    color: #9ca3af;
+}
+
+button {
+    padding: 13px 16px;
+    border-radius: 9px;
+    background: var(--primary);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    transition:
+            background 0.2s ease,
+            transform 0.15s ease,
+            box-shadow 0.2s ease;
+}
+
+button:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+#errorMessage {
+    color: var(--danger);
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.switch-page {
+    text-align: center;
+    margin-top: 22px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.switch-page a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.switch-page a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+.dashboard-container {
+    min-height: 100vh;
+    padding: 35px 7%;
+}
+
+
+/* ---------- Header ---------- */
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+    margin-bottom: 4px;
+    font-size: 30px;
+    letter-spacing: -0.5px;
+}
+
+.dashboard-header p {
+    color: var(--muted);
+}
+
+.dashboard-header button {
+    width: auto;
+    padding: 10px 20px;
+    background: #111827;
+}
+
+.dashboard-header button:hover {
+    background: #1f2937;
+}
+
+
+/* ---------- Cards ---------- */
+
+.dashboard-card {
+    background: var(--card);
+    padding: 26px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+}
+
+.dashboard-card h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+
+/* ---------- Section Header ---------- */
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    margin-bottom: 0;
+}
+
+.section-header button {
+    width: auto;
+    padding: 9px 16px;
+}
+
+
+/* =========================================================
+   CREATE URL FORM
+   ========================================================= */
+
+#createUrlForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#createUrlForm button {
+    margin-top: 5px;
+}
+
+
+/* ---------- Input Hints ---------- */
+
+.input-hint {
+    display: block;
+    margin-top: -3px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.input-error {
+    color: var(--danger);
+}
+
+.input-success {
+    color: var(--success);
+}
+
+
+/* ---------- Create Message ---------- */
+
+#createMessage {
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   URL LIST
+   ========================================================= */
+
+.url-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    padding: 20px;
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #ffffff;
+    transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            transform 0.2s ease;
+}
+
+.url-item:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.07);
+    transform: translateY(-1px);
+}
+
+.url-item:last-child {
+    margin-bottom: 0;
+}
+
+.url-item strong {
+    display: inline-block;
+    margin-bottom: 3px;
+    font-size: 18px;
+    color: var(--primary);
+}
+
+.url-item p {
+    margin: 5px 0;
+    color: var(--muted);
+    word-break: break-word;
+}
+
+.url-item p:last-child {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 600;
+}
+
+
+/* ---------- URL Actions ---------- */
+
+.url-item > div:last-child {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+.url-item a,
+.url-item button {
+    margin-left: 0;
+}
+
+.url-item a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 13px;
+    border-radius: 8px;
+    background: #eff6ff;
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+.url-item a:hover {
+    background: #dbeafe;
+}
+
+
+/* =========================================================
+   URL ACTION BUTTONS
+   ========================================================= */
+
+.edit-button,
+.status-button,
+.delete-button {
+    width: auto;
+    padding: 8px 13px;
+    margin: 0;
+    font-size: 14px;
+    border-radius: 8px;
+}
+
+
+/* ---------- Edit ---------- */
+
+.edit-button {
+    background: #2563eb;
+    color: white;
+}
+
+.edit-button:hover {
+    background: #1d4ed8;
+}
+
+
+/* ---------- Status ---------- */
+
+.status-button {
+    background: #64748b;
+    color: white;
+}
+
+.status-button:hover {
+    background: #475569;
+}
+
+
+/* ---------- Delete ---------- */
+
+.delete-button {
+    background: var(--danger);
+    color: white;
+}
+
+.delete-button:hover {
+    background: #b91c1c;
+}
+
+
+/* ---------- QR ---------- */
+
+.qr-button {
+    width: auto;
+    padding: 8px 13px;
+    margin: 0;
+    font-size: 14px;
+    border-radius: 8px;
+    background: #7c3aed;
+    color: white;
+}
+
+.qr-button:hover {
+    background: #6d28d9;
+}
+
+
+/* =========================================================
+   ANALYTICS
+   ========================================================= */
+
+.analytics-card {
+    background: var(--card);
+    padding: 26px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+}
+
+.analytics-card h2 {
+    margin-bottom: 15px;
+}
+
+
+/* =========================================================
+   EMPTY / LOADING STATES
+   ========================================================= */
+
+#urlList > p {
+    padding: 25px;
+    text-align: center;
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .dashboard-container {
+        padding: 25px;
+    }
+
+    .url-item {
+        align-items: flex-start;
+    }
+
+    .url-item > div:last-child {
+        max-width: 100%;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .auth-card {
+        padding: 28px 22px;
+    }
+
+    .dashboard-container {
+        padding: 20px 15px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 25px;
+    }
+
+    .dashboard-header button {
+        width: 100%;
+    }
+
+    .dashboard-card {
+        padding: 20px;
+        border-radius: 13px;
+    }
+
+    .section-header {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .url-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+    }
+
+    .url-item > div:last-child {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .url-item a,
+    .url-item button {
+        margin: 0;
+    }
+}
+
+
+@media (max-width: 450px) {
+
+    .auth-card h1 {
+        font-size: 26px;
+    }
+
+    .dashboard-card {
+        padding: 17px;
+    }
+
+    .url-item {
+        padding: 16px;
+    }
+
+    .url-item > div:last-child {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .url-item a,
+    .url-item button {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   QR MODAL
+   ========================================================= */
+
+.qr-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.6);
+    z-index: 1000;
+}
+
+.qr-modal {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    padding: 30px;
+    text-align: center;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.qr-modal h2 {
+    margin-bottom: 8px;
+}
+
+.qr-modal p {
+    margin-bottom: 20px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.qr-modal img {
+    display: block;
+    width: 300px;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 20px;
+    border-radius: 8px;
+}
+
+.qr-close {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    width: auto;
+    padding: 2px 8px;
+    background: transparent;
+    color: #6b7280;
+    font-size: 28px;
+    line-height: 1;
+}
+
+.qr-close:hover {
+    background: transparent;
+    color: #111827;
+    box-shadow: none;
+}
+
+.qr-close-button {
+    width: 100%;
+}

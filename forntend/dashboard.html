@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | URL Shortener</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <header class="dashboard-header">
+
+        <div>
+            <h1>URL Shortener</h1>
+            <p>Manage your shortened URLs</p>
+        </div>
+
+        <button id="logoutButton">Logout</button>
+
+    </header>
+
+
+    <main>
+
+        <!-- Create URL -->
+
+        <section class="dashboard-card">
+
+            <h2>Create Short URL</h2>
+
+            <form id="createUrlForm">
+                <input type="url" id="originalUrl"
+                       placeholder="Enter original URL" required>
+
+                <label for="customCode">Custom Short Code (optional)</label>
+
+                <input
+                        type="text"
+                        id="customCode"
+                        placeholder="e.g. youtube123"
+                >
+
+                <small class="input-hint">
+                    3–20 characters. Leave empty to generate automatically.
+                </small>
+
+                <label for="expiresAt">Expiration (optional)</label>
+                <input type="datetime-local" id="expiresAt">
+
+                <button type="submit">Create Short URL</button>
+            </form>
+
+            <p id="createMessage"></p>
+
+        </section>
+
+
+        <!-- URL List -->
+
+        <section class="dashboard-card">
+
+            <div class="section-header">
+
+                <h2>My URLs</h2>
+
+                <button id="refreshButton">
+                    Refresh
+                </button>
+
+            </div>
+
+            <div id="urlList">
+
+                <p>Loading URLs...</p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>

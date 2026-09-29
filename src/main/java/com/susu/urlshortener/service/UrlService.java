@@ -1,6 +1,5 @@
 package com.susu.urlshortener.service;
 
-import org.springframework.data.redis.core.RedisTemplate;
 import com.susu.urlshortener.dto.AnalyticsResponse;
 import com.susu.urlshortener.dto.CreateUrlRequest;
 import com.susu.urlshortener.dto.UpdateStatusRequest;
@@ -8,14 +7,17 @@ import com.susu.urlshortener.dto.UpdateUrlRequest;
 import com.susu.urlshortener.entity.ClickEvent;
 import com.susu.urlshortener.entity.Url;
 import com.susu.urlshortener.entity.User;
-import com.susu.urlshortener.exception.UnauthorizedException;
 import com.susu.urlshortener.exception.ConflictException;
 import com.susu.urlshortener.exception.ResourceNotFoundException;
+import com.susu.urlshortener.exception.UnauthorizedException;
 import com.susu.urlshortener.repository.ClickEventRepository;
 import com.susu.urlshortener.repository.UrlRepository;
 import com.susu.urlshortener.repository.UserRepository;
 import com.susu.urlshortener.util.UserAgentParser;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,9 @@ public class UrlService {
     private final UserRepository userRepository;
     private final RedisTemplate<String, String> redisTemplate;
 
+    private static final Logger log =
+            LoggerFactory.getLogger(UrlService.class);
+
     public UrlService(
             UrlRepository urlRepository,
             ClickEventRepository clickEventRepository,
@@ -46,7 +51,6 @@ public class UrlService {
         this.userRepository = userRepository;
         this.redisTemplate = redisTemplate;
     }
-
 
     // =========================================================
     // CREATE URL
@@ -93,18 +97,29 @@ public class UrlService {
         // Get currently logged-in user
         User currentUser = getCurrentUser();
 
-        // Create URL
         Url url = new Url(
                 originalUrl,
                 shortCode
         );
 
+        // Set expiration if provided
+        if (request.getExpiresAt() != null) {
+            url.setExpiresAt(request.getExpiresAt());
+        }
+
         // Assign ownership
         url.setUser(currentUser);
 
-        return urlRepository.save(url);
-    }
+        Url savedUrl = urlRepository.save(url);
 
+        log.info(
+                "Short URL created: shortCode={}, userId={}",
+                shortCode,
+                currentUser.getId()
+        );
+
+        return savedUrl;
+    }
 
     // =========================================================
     // GET ALL URLS FOR CURRENT USER
@@ -119,7 +134,6 @@ public class UrlService {
         );
     }
 
-
     // =========================================================
     // GET ONE URL
     // =========================================================
@@ -128,7 +142,6 @@ public class UrlService {
 
         return getOwnedUrl(id);
     }
-
 
     // =========================================================
     // UPDATE URL
@@ -163,11 +176,11 @@ public class UrlService {
                     request.getExpiresAt()
             );
         }
+
         evictCache(url.getShortCode());
 
         return urlRepository.save(url);
     }
-
 
     // =========================================================
     // ACTIVATE / DEACTIVATE URL
@@ -183,11 +196,11 @@ public class UrlService {
         url.setActive(
                 request.isActive()
         );
+
         evictCache(url.getShortCode());
 
         return urlRepository.save(url);
     }
-
 
     // =========================================================
     // DELETE URL
@@ -200,12 +213,18 @@ public class UrlService {
 
         // Delete click history first
         clickEventRepository.deleteByUrlId(id);
+
         evictCache(url.getShortCode());
 
         // Delete URL
         urlRepository.delete(url);
-    }
 
+        log.info(
+                "Short URL deleted: shortCode={}, userId={}",
+                url.getShortCode(),
+                url.getUser().getId()
+        );
+    }
 
     // =========================================================
     // REDIRECT + CLICK TRACKING
@@ -222,27 +241,46 @@ public class UrlService {
         // 1. Find URL entity
         Url url = urlRepository.findByShortCode(shortCode)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("URL not found")
+                        new ResourceNotFoundException(
+                                "URL not found"
+                        )
                 );
 
         // 2. Check whether URL is active
         if (!url.isActive()) {
-            throw new IllegalStateException("URL is inactive");
+            throw new IllegalStateException(
+                    "URL is inactive"
+            );
         }
 
         // 3. Check expiration
         if (url.getExpiresAt() != null &&
                 url.getExpiresAt().isBefore(LocalDateTime.now())) {
 
-            throw new IllegalStateException("URL has expired");
+            throw new IllegalStateException(
+                    "URL has expired"
+            );
         }
 
         // 4. Check Redis
         String cachedUrl =
                 redisTemplate.opsForValue().get(cacheKey);
 
+        if (cachedUrl != null) {
+
+            log.info(
+                    "Redis cache HIT: shortCode={}",
+                    shortCode
+            );
+        }
+
         // 5. Redis MISS → store URL in Redis
         if (cachedUrl == null) {
+
+            log.info(
+                    "Redis cache MISS: shortCode={}",
+                    shortCode
+            );
 
             redisTemplate.opsForValue().set(
                     cacheKey,
@@ -268,11 +306,15 @@ public class UrlService {
 
         urlRepository.save(url);
 
+        log.info(
+                "URL redirected: shortCode={}, totalClicks={}",
+                shortCode,
+                url.getClickCount()
+        );
+
         // 8. Return original URL
         return cachedUrl;
     }
-
-
 
     // =========================================================
     // ANALYTICS
@@ -398,7 +440,6 @@ public class UrlService {
         );
     }
 
-
     // =========================================================
     // GET CURRENT USER
     // =========================================================
@@ -414,7 +455,6 @@ public class UrlService {
                         )
                 );
     }
-
 
     // =========================================================
     // GET CURRENT USER EMAIL FROM JWT
@@ -437,7 +477,6 @@ public class UrlService {
 
         return authentication.getName();
     }
-
 
     // =========================================================
     // GET URL ONLY IF CURRENT USER OWNS IT
@@ -467,7 +506,6 @@ public class UrlService {
         return url;
     }
 
-
     // =========================================================
     // URL VALIDATION
     // =========================================================
@@ -477,7 +515,6 @@ public class UrlService {
         return url.startsWith("http://")
                 || url.startsWith("https://");
     }
-
 
     // =========================================================
     // CUSTOM CODE VALIDATION
@@ -505,7 +542,6 @@ public class UrlService {
         }
     }
 
-
     // =========================================================
     // GENERATE UNIQUE SHORT CODE
     // =========================================================
@@ -529,7 +565,11 @@ public class UrlService {
 
         return shortCode;
     }
+
     private void evictCache(String shortCode) {
-        redisTemplate.delete("url:" + shortCode);
+
+        redisTemplate.delete(
+                "url:" + shortCode
+        );
     }
 }
