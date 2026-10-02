@@ -1,5 +1,6 @@
 package com.susu.urlshortener.config;
 
+import com.susu.urlshortener.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
