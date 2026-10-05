@@ -1,4 +1,7 @@
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL =
+    window.location.hostname === "localhost"
+        ? "http://localhost:8080"
+        : "https://url-shortenerr-q1cl.onrender.com";
 async function apiRequest(endpoint, options = {}) {
 
     const token = localStorage.getItem("accessToken");
