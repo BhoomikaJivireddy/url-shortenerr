@@ -24,11 +24,18 @@ async function apiRequest(endpoint, options = {}) {
     );
 
     if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
 
-        window.location.href = "login.html";
-        return;
+        console.error(
+            "Authentication failed:",
+            response.status,
+            response.statusText
+        );
+
+        alert(
+            `Authentication failed: ${response.status}`
+        );
+
+        return response;
     }
 
     return response;
